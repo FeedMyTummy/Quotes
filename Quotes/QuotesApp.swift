@@ -11,7 +11,12 @@ import SwiftUI
 struct QuotesApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationView {
+                let quotesService = LocalQuotesService()
+                let quotesViewModel = QuotesViewModel(service: quotesService)
+                ContentView(quotesViewModel: quotesViewModel)
+            }.preferredColorScheme(.light)
         }
     }
 }
+
