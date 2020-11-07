@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  InitialView.swift
 //  Quotes
 //
 //  Created by FeedMyTummy on 11/6/20.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct InitialView: View {
     
     @ObservedObject private var quotesViewModel: QuotesViewModel
     
@@ -30,6 +30,7 @@ struct ContentView: View {
                 }
             }
         }
+        .navigationBarHidden(true)
         .ignoresSafeArea()
     }
     
@@ -40,6 +41,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(quotesViewModel: QuotesViewModel(service: LocalQuotesService()))
+        InitialView(quotesViewModel: QuotesViewModel(service: LocalQuotesService()))
     }
 }

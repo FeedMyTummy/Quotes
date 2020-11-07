@@ -14,7 +14,7 @@ struct QuotesApp: App {
             NavigationView {
                 let quotesService = LocalQuotesService()
                 let quotesViewModel = QuotesViewModel(service: quotesService)
-                ContentView(quotesViewModel: quotesViewModel)
+                InitialView(quotesViewModel: quotesViewModel)
             }.preferredColorScheme(.light)
         }
     }

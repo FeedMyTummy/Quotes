@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		84B255F025561D8C00E11CB4 /* QuoteBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B255EF25561D8C00E11CB4 /* QuoteBubbleView.swift */; };
 		84EAA4E82555EDF9001F2769 /* QuotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EAA4E72555EDF9001F2769 /* QuotesApp.swift */; };
-		84EAA4EA2555EDF9001F2769 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EAA4E92555EDF9001F2769 /* ContentView.swift */; };
+		84EAA4EA2555EDF9001F2769 /* InitialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EAA4E92555EDF9001F2769 /* InitialView.swift */; };
 		84EAA4EC2555EDFC001F2769 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84EAA4EB2555EDFC001F2769 /* Assets.xcassets */; };
 		84EAA4EF2555EDFC001F2769 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84EAA4EE2555EDFC001F2769 /* Preview Assets.xcassets */; };
 		84EAA4F92555EE2F001F2769 /* QuotesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EAA4F82555EE2F001F2769 /* QuotesService.swift */; };
@@ -22,7 +22,7 @@
 		84B255EF25561D8C00E11CB4 /* QuoteBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteBubbleView.swift; sourceTree = "<group>"; };
 		84EAA4E42555EDF9001F2769 /* Quotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84EAA4E72555EDF9001F2769 /* QuotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotesApp.swift; sourceTree = "<group>"; };
-		84EAA4E92555EDF9001F2769 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		84EAA4E92555EDF9001F2769 /* InitialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialView.swift; sourceTree = "<group>"; };
 		84EAA4EB2555EDFC001F2769 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84EAA4EE2555EDFC001F2769 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		84EAA4F02555EDFC001F2769 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -75,7 +75,7 @@
 				84EAA5052555F69D001F2769 /* ViewModels */,
 				84EAA4F72555EE20001F2769 /* Services */,
 				84EAA4E72555EDF9001F2769 /* QuotesApp.swift */,
-				84EAA4E92555EDF9001F2769 /* ContentView.swift */,
+				84EAA4E92555EDF9001F2769 /* InitialView.swift */,
 				84EAA4EB2555EDFC001F2769 /* Assets.xcassets */,
 				84EAA4F02555EDFC001F2769 /* Info.plist */,
 				84EAA4ED2555EDFC001F2769 /* Preview Content */,
@@ -187,7 +187,7 @@
 			files = (
 				84EAA4FD2555EE88001F2769 /* LocalQuotesService.swift in Sources */,
 				84EAA5072555F6B1001F2769 /* QuotesViewModel.swift in Sources */,
-				84EAA4EA2555EDF9001F2769 /* ContentView.swift in Sources */,
+				84EAA4EA2555EDF9001F2769 /* InitialView.swift in Sources */,
 				84EAA4F92555EE2F001F2769 /* QuotesService.swift in Sources */,
 				84B255F025561D8C00E11CB4 /* QuoteBubbleView.swift in Sources */,
 				84EAA5012555EEFD001F2769 /* Quote.swift in Sources */,
