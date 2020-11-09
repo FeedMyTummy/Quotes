@@ -21,8 +21,6 @@ struct QuotesApp: App {
             .onAppear {
                 let notification = LocalNotificationFactory().makeDailyQuote()
                 NotificationsScheduler().schedule(notification)
-            }
-            .onAppear {
                 quotesViewModel.fetchQuote()
             }
         }
