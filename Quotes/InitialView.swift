@@ -11,6 +11,7 @@ struct InitialView: View {
     
     @ObservedObject private var quotesViewModel: QuotesViewModel
     @StateObject private var notificationCenter = NotificationCenter()
+    @State private var animate = false
     
     var body: some View {
         ZStack {
@@ -23,7 +24,14 @@ struct InitialView: View {
             case .loaded(let quote):
                 VStack {
                     Spacer()
-                    QuoteBubbleView(quote).padding([.horizontal], 20)
+                    QuoteBubbleView(quote)
+                        .padding([.horizontal], 20)
+                        .scaleEffect(animate ? 1 : 0.5)
+                        .onAppear {
+                            withAnimation(.easeIn(duration: 0.3)) {
+                                animate.toggle()
+                            }
+                        }
                     Spacer()
                     Spacer()
                 }
