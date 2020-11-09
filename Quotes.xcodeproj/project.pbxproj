@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		846CA6BD25578662006ABE2A /* ForegroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846CA6BC25578662006ABE2A /* ForegroundObserver.swift */; };
+		846CA6C125588EF3006ABE2A /* NotificationsScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846CA6C025588EF3006ABE2A /* NotificationsScheduler.swift */; };
+		846CA6C52558A632006ABE2A /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846CA6C42558A632006ABE2A /* NotificationCenter.swift */; };
 		84B255F025561D8C00E11CB4 /* QuoteBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B255EF25561D8C00E11CB4 /* QuoteBubbleView.swift */; };
 		84EAA4E82555EDF9001F2769 /* QuotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EAA4E72555EDF9001F2769 /* QuotesApp.swift */; };
 		84EAA4EA2555EDF9001F2769 /* InitialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EAA4E92555EDF9001F2769 /* InitialView.swift */; };
@@ -20,7 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		846CA6BC25578662006ABE2A /* ForegroundObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundObserver.swift; sourceTree = "<group>"; };
+		846CA6C025588EF3006ABE2A /* NotificationsScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsScheduler.swift; sourceTree = "<group>"; };
+		846CA6C42558A632006ABE2A /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		84B255EF25561D8C00E11CB4 /* QuoteBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteBubbleView.swift; sourceTree = "<group>"; };
 		84EAA4E42555EDF9001F2769 /* Quotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84EAA4E72555EDF9001F2769 /* QuotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotesApp.swift; sourceTree = "<group>"; };
@@ -56,7 +58,8 @@
 		846CA6BB25578648006ABE2A /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				846CA6BC25578662006ABE2A /* ForegroundObserver.swift */,
+				846CA6C025588EF3006ABE2A /* NotificationsScheduler.swift */,
+				846CA6C42558A632006ABE2A /* NotificationCenter.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -202,8 +205,9 @@
 				84EAA4F92555EE2F001F2769 /* QuotesService.swift in Sources */,
 				84B255F025561D8C00E11CB4 /* QuoteBubbleView.swift in Sources */,
 				84EAA5012555EEFD001F2769 /* Quote.swift in Sources */,
-				846CA6BD25578662006ABE2A /* ForegroundObserver.swift in Sources */,
 				84EAA4E82555EDF9001F2769 /* QuotesApp.swift in Sources */,
+				846CA6C52558A632006ABE2A /* NotificationCenter.swift in Sources */,
+				846CA6C125588EF3006ABE2A /* NotificationsScheduler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,14 +10,14 @@ import SwiftUI
 struct InitialView: View {
     
     @ObservedObject private var quotesViewModel: QuotesViewModel
-    @ObservedObject private var foregroundObserver: ForegroundObserver
+    @StateObject private var notificationCenter = NotificationCenter()
     
     var body: some View {
         ZStack {
             Color.white
             switch quotesViewModel.state {
             case .idle, .loading:
-                ProgressView()
+                ProgressView().onAppear(perform: quotesViewModel.fetchQuote)
             case .failed(let error):
                 Text("Error: \(error.localizedDescription)")
             case .loaded(let quote):
@@ -29,21 +29,20 @@ struct InitialView: View {
                 }
             }
         }
-        .onReceive(foregroundObserver.$enteredForeground) { _ in
-            quotesViewModel.fetchQuote()
-        }
         .navigationBarHidden(true)
         .ignoresSafeArea()
+        .onChange(of: notificationCenter.dailyQuoteNotification) { _ in
+            quotesViewModel.fetchQuote()
+        }
     }
     
-    init(quotesViewModel: QuotesViewModel, foregroundObserver: ForegroundObserver) {
+    init(quotesViewModel: QuotesViewModel) {
         self.quotesViewModel = quotesViewModel
-        self.foregroundObserver = foregroundObserver
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        InitialView(quotesViewModel: QuotesViewModel(service: LocalQuotesService()), foregroundObserver: .init())
+        InitialView(quotesViewModel: QuotesViewModel(service: LocalQuotesService()))
     }
 }

@@ -9,14 +9,19 @@ import SwiftUI
 
 @main
 struct QuotesApp: App {
+    
     var body: some Scene {
         WindowGroup {
             NavigationView {
                 let quotesService = LocalQuotesService()
                 let quotesViewModel = QuotesViewModel(service: quotesService)
-                InitialView(quotesViewModel: quotesViewModel, foregroundObserver: .init())
-            }.preferredColorScheme(.light)
+                InitialView(quotesViewModel: quotesViewModel)
+            }
+            .preferredColorScheme(.light)
+            .onAppear {
+                let notification = LocalNotificationFactory().makeDailyQuote()
+                NotificationsScheduler().schedule(notification)
+            }
         }
     }
 }
-

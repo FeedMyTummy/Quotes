@@ -26,12 +26,12 @@ class QuotesViewModel: ObservableObject {
     func fetchQuote() {
         state = .loading
         
-        service.fetchQuote { result in
+        service.fetchQuote { [weak self] result in
             switch result {
             case .success(let quote):
-                self.state = .loaded(quote)
+                self?.state = .loaded(quote)
             case .failure(let error):
-                self.state = .failed(error)
+                self?.state = .failed(error)
             }
         }
     }
