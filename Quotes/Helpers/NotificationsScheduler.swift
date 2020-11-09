@@ -28,7 +28,7 @@ struct LocalNotificationFactory {
                                   title: "Daily Quote",
                                   body: "",
                                   sound: .default,
-                                  timeInterval: day,
+                                  timeInterval: 60,
                                   repeats: true)
     }
 }

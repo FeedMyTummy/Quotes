@@ -12,15 +12,18 @@ struct QuotesApp: App {
     
     var body: some Scene {
         WindowGroup {
+            let quotesService = LocalQuotesService()
+            let quotesViewModel = QuotesViewModel(service: quotesService)
             NavigationView {
-                let quotesService = LocalQuotesService()
-                let quotesViewModel = QuotesViewModel(service: quotesService)
                 InitialView(quotesViewModel: quotesViewModel)
             }
             .preferredColorScheme(.light)
             .onAppear {
                 let notification = LocalNotificationFactory().makeDailyQuote()
                 NotificationsScheduler().schedule(notification)
+            }
+            .onAppear {
+                quotesViewModel.fetchQuote()
             }
         }
     }
