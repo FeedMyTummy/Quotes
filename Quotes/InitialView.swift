@@ -17,23 +17,11 @@ struct InitialView: View {
             Color.white
             switch quotesViewModel.state {
             case .idle, .loading:
-                ProgressView()
+                makeProgressView()
             case .failed(let error):
-                Text("Error: \(error.localizedDescription)")
+                makeErrorView(error)
             case .loaded(let quote):
-                VStack {
-                    Spacer()
-                    QuoteBubbleView(quote)
-                        .padding([.horizontal], 20)
-                        .scaleEffect(animate ? 1 : 0.5)
-                        .onAppear {
-                            withAnimation(.easeIn(duration: 0.3)) {
-                                animate.toggle()
-                            }
-                        }
-                    Spacer()
-                    Spacer()
-                }
+                makeQuoteView(quote)
             }
         }
         .navigationBarHidden(true)
@@ -43,10 +31,37 @@ struct InitialView: View {
     init(quotesViewModel: QuotesViewModel) {
         self.quotesViewModel = quotesViewModel
     }
+    
+    private func makeProgressView() -> some View {
+        ProgressView()
+    }
+    
+    private func makeErrorView(_ error: Error) -> some View {
+        Text("Error: \(error.localizedDescription)")
+    }
+    
+    private func makeQuoteView(_ quote: Quote) -> some View {
+        VStack {
+            Spacer()
+            QuoteBubbleView(quote)
+                .padding([.horizontal], 20)
+                .scaleEffect(animate ? 1 : 0.5)
+                .onAppear {
+                    withAnimation(.easeIn(duration: 0.3)) {
+                        animate.toggle()
+                    }
+                }
+            Spacer()
+            Spacer()
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        InitialView(quotesViewModel: QuotesViewModel(service: LocalQuotesService()))
+        let quotesViewModel = QuotesViewModel(service: LocalQuotesService())
+        let initialView = InitialView(quotesViewModel: quotesViewModel)
+        quotesViewModel.fetchQuote()
+        return initialView
     }
 }
