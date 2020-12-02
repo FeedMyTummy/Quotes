@@ -1,5 +1,5 @@
 //
-//  QuoteBubbleView.swift
+//  BubbleView.swift
 //  Quotes
 //
 //  Created by FeedMyTummy on 11/6/20.
@@ -7,22 +7,20 @@
 
 import SwiftUI
 
-struct QuoteBubbleView: View {
-    let quote: Quote
+struct BubbleView<Content: View>: View {
+    
+    private let content: () -> Content
     
     var body: some View {
         VStack(spacing: phraseAndAuthorVerticalSpacing) {
-            Text("\"\(quote.phrase)\"").font(.title).padding([.horizontal, .top])
-            Text("- \(quote.author)").padding([.horizontal, .bottom])
+            content()
         }
-        .foregroundColor(.white)
-        .background(Color.blue)
         .cornerRadius(bubbleCornerRadius)
         .shadow(color: Color.black.opacity(shadowOpacity), radius: shadowCornerRadius)
     }
     
-    init(_ quote: Quote) {
-        self.quote = quote
+    init(_ content: @escaping () -> Content) {
+        self.content = content
     }
     
     // MARK: - Constants
@@ -32,8 +30,13 @@ struct QuoteBubbleView: View {
     private let shadowOpacity: Double = 0.6
 }
 
-struct QuoteBubbleView_Previews: PreviewProvider {
+struct BubbleView_Previews: PreviewProvider {
     static var previews: some View {
-        QuoteBubbleView(Quote(phrase: "21,000,000", author: "My Node"))
+        ZStack {
+            Rectangle().foregroundColor(.orange).edgesIgnoringSafeArea(.all)
+            BubbleView {
+                QuoteView(Quote(phrase: "21,000,000", author: "My Node"))
+            }
+        }
     }
 }

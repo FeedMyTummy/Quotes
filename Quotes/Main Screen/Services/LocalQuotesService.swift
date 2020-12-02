@@ -18,7 +18,7 @@ final class LocalQuotesService: QuotesService {
         Quote(phrase: "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks",
               author: "Satoshi Nakamoto"),
         
-        Quote(phrase: "Not your keys, not your Bitcoin",
+        Quote(phrase: "Not your keys, not your bitcoin",
               author: "Andreas Antonopoulos"),
         
         Quote(phrase: "Imagine the entire world economy moving into bitcoin. Everything there is, divided by 21 million.",
