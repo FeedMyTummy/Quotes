@@ -17,7 +17,7 @@ struct InitialView: View {
             Color.orange
             
             VStack {
-                TabViewNavigationView(icon: Image(systemName: "gear"), side: .right) {
+                TabNavigationView(icon: Image(systemName: "gear"), side: .right) {
                     tabSelected.selection = .settings
                 }
                 
@@ -29,7 +29,7 @@ struct InitialView: View {
                 case .failed(let error):
                     makeErrorView(error)
                 case .loaded(let quote):
-                    QuoteView(quote)
+                    QuoteBubleView(quote)
                 }
                 
                 Spacer()

@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		843D8A13257C0CAA00BE0794 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843D8A12257C0CAA00BE0794 /* SettingsView.swift */; };
-		846C8ED9257DD442002F8320 /* TabViewNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846C8ED8257DD442002F8320 /* TabViewNavigationView.swift */; };
+		846C8ED9257DD442002F8320 /* TabNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846C8ED8257DD442002F8320 /* TabNavigationView.swift */; };
 		846CA6C125588EF3006ABE2A /* NotificationsScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846CA6C025588EF3006ABE2A /* NotificationsScheduler.swift */; };
-		84A562D62577E2FB00B109C4 /* QuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A562D52577E2FB00B109C4 /* QuoteView.swift */; };
+		84A562D62577E2FB00B109C4 /* QuoteBubleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A562D52577E2FB00B109C4 /* QuoteBubleView.swift */; };
 		84B255F025561D8C00E11CB4 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B255EF25561D8C00E11CB4 /* BubbleView.swift */; };
 		84EAA4E82555EDF9001F2769 /* QuotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EAA4E72555EDF9001F2769 /* QuotesApp.swift */; };
 		84EAA4EA2555EDF9001F2769 /* InitialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EAA4E92555EDF9001F2769 /* InitialView.swift */; };
@@ -25,9 +25,9 @@
 
 /* Begin PBXFileReference section */
 		843D8A12257C0CAA00BE0794 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		846C8ED8257DD442002F8320 /* TabViewNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewNavigationView.swift; sourceTree = "<group>"; };
+		846C8ED8257DD442002F8320 /* TabNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabNavigationView.swift; sourceTree = "<group>"; };
 		846CA6C025588EF3006ABE2A /* NotificationsScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsScheduler.swift; sourceTree = "<group>"; };
-		84A562D52577E2FB00B109C4 /* QuoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteView.swift; sourceTree = "<group>"; };
+		84A562D52577E2FB00B109C4 /* QuoteBubleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteBubleView.swift; sourceTree = "<group>"; };
 		84B255EF25561D8C00E11CB4 /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		84EAA4E42555EDF9001F2769 /* Quotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84EAA4E72555EDF9001F2769 /* QuotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotesApp.swift; sourceTree = "<group>"; };
@@ -57,7 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				84B255EF25561D8C00E11CB4 /* BubbleView.swift */,
-				84A562D52577E2FB00B109C4 /* QuoteView.swift */,
+				84A562D52577E2FB00B109C4 /* QuoteBubleView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -74,7 +74,7 @@
 		846C8ED7257DD42B002F8320 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
-				846C8ED8257DD442002F8320 /* TabViewNavigationView.swift */,
+				846C8ED8257DD442002F8320 /* TabNavigationView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -243,14 +243,14 @@
 				84EAA4FD2555EE88001F2769 /* LocalQuotesService.swift in Sources */,
 				84EAA5072555F6B1001F2769 /* QuotesViewModel.swift in Sources */,
 				84F9B22F257D555100F27E7B /* NotificationSettings.swift in Sources */,
-				846C8ED9257DD442002F8320 /* TabViewNavigationView.swift in Sources */,
+				846C8ED9257DD442002F8320 /* TabNavigationView.swift in Sources */,
 				84EAA4EA2555EDF9001F2769 /* InitialView.swift in Sources */,
 				84EAA4F92555EE2F001F2769 /* QuotesService.swift in Sources */,
 				84B255F025561D8C00E11CB4 /* BubbleView.swift in Sources */,
 				843D8A13257C0CAA00BE0794 /* SettingsView.swift in Sources */,
 				84EAA5012555EEFD001F2769 /* Quote.swift in Sources */,
 				84EAA4E82555EDF9001F2769 /* QuotesApp.swift in Sources */,
-				84A562D62577E2FB00B109C4 /* QuoteView.swift in Sources */,
+				84A562D62577E2FB00B109C4 /* QuoteBubleView.swift in Sources */,
 				846CA6C125588EF3006ABE2A /* NotificationsScheduler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

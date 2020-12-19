@@ -33,7 +33,7 @@ struct BubbleView<Content: View>: View {
 struct BubbleView_Previews: PreviewProvider {
     static var previews: some View {
         BubbleView {
-            QuoteView(Quote(phrase: "21,000,000", author: "My Node"))
+            QuoteBubleView(Quote(phrase: "21,000,000", author: "My Node"))
         }
     }
 }

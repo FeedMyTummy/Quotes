@@ -1,5 +1,5 @@
 //
-//  QuoteView.swift
+//  QuoteBubleView.swift
 //  Quotes
 //
 //  Created by FeedMyTummy on 12/2/20.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct QuoteView: View {
+struct QuoteBubleView: View {
     
     @State private var isFirstTimeAppearing = true
     
@@ -54,7 +54,7 @@ struct QuoteView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color.orange.edgesIgnoringSafeArea(.all)
-            QuoteView(Quote(phrase: "21,000,000", author: "My Node"))
+            QuoteBubleView(Quote(phrase: "21,000,000", author: "My Node"))
         }
     }
 }
