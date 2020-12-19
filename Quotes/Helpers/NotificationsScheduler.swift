@@ -6,64 +6,120 @@
 //
 
 import NotificationCenter
+import SwiftUI
 
 struct QuotesNotification {
+    
+    enum Repeat {
+        case doesNotRepeat
+        case daily
+    }
+    
     let id: String
     let title: String
     let body: String
     let sound: UNNotificationSound
-    let timeInterval: TimeInterval
-    let repeats: Bool
+    let startDate: Date
+    let frequency: Repeat
 }
 
 struct LocalNotificationFactory {
     
-    func makeDailyQuote() -> QuotesNotification {
-        
-        let minute = 60.0
-        let hour   = minute * 60.0
-        let day    = hour * 24.0
-        
-        return QuotesNotification(id: "daily",
+    static let dailyNotificationID = "daily"
+    
+    func makeDaily(startDate: Date) -> QuotesNotification {
+        return QuotesNotification(id: LocalNotificationFactory.dailyNotificationID,
                                   title: "Daily Quote",
                                   body: "",
                                   sound: .default,
-                                  timeInterval: day,
-                                  repeats: true)
+                                  startDate: startDate,
+                                  frequency: .daily)
     }
 }
 
+
+enum NotificationsSchedulerError: Error {
+    case authorizationDenied
+    case uknown
+}
+
+// All strong self references are intentional. These ensures NotificationsScheduler is kept on the heap until method finishes.
 final class NotificationsScheduler {
     
-    func schedule(_ notification: QuotesNotification) {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
+    let notificationCenter = UNUserNotificationCenter.current()
+    let currentCalendar = Calendar.current
+    
+    func schedule(_ notification: QuotesNotification, completion: ((Result<Void, NotificationsSchedulerError>) -> ())? = nil) {
+        notificationCenter.getNotificationSettings { settings in
             switch settings.authorizationStatus {
             case .notDetermined:
-                self.requestNotificationAuthorization(notification)
+                self.requestNotificationAuthorization(notification) { granted in
+                    granted ? completion?(.success(())) : completion?(.failure(.authorizationDenied))
+                }
             case .denied:
-                print("Notification authorization denied") // TODO:
+                completion?(.failure(.authorizationDenied))
             case .authorized:
                 self.scheduleNotifications(notification)
+                completion?(.success(()))
             case .provisional, .ephemeral:
+                // TODO:
                 break
             @unknown default:
+                completion?(.failure(.uknown))
                 break
+            }
+        }
+    }
+    
+    func reschedule(_ notification: QuotesNotification, completion: @escaping (Result<Void, NotificationsSchedulerError>) -> ()) {
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [notification.id])
+        
+        schedule(notification) { result in
+            switch result {
+            case .success:
+                self.schedule(notification)
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func removeNotificationWith(ids: [String]) {
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: ids)
+    }
+    
+    func dateForNotificationWith(id: String, completion: @escaping (Date?) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.notificationCenter.getPendingNotificationRequests { requests in
+                
+                var date: Date? = nil
+                
+                if let notification = requests.first(where: { $0.identifier == id })?.trigger as? UNCalendarNotificationTrigger {
+                    date = self.currentCalendar.date(from: notification.dateComponents)
+                }
+                
+                DispatchQueue.main.async {
+                    completion(date)
+                }
             }
         }
     }
     
     private func doesNotificationExistWith(id: String, completion: @escaping (Bool) -> ()) {
-        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+        notificationCenter.getPendingNotificationRequests { requests in
             let doesExist = requests.contains(where: { $0.identifier == id })
             completion(doesExist)
         }
     }
     
-    private func requestNotificationAuthorization(_ notification: QuotesNotification) {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+    private func requestNotificationAuthorization(_ notification: QuotesNotification, completion: @escaping (Bool) -> ()) {
+        notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             if granted && error == nil {
                 self.scheduleNotifications(notification)
+                completion(true)
             }
+            completion(false)
         }
     }
     
@@ -76,14 +132,22 @@ final class NotificationsScheduler {
             content.body = notification.body
             content.sound = notification.sound
             
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: notification.timeInterval,
-                                                            repeats: notification.repeats)
+            let trigger: UNCalendarNotificationTrigger
+            
+            switch notification.frequency {
+            case .doesNotRepeat:
+                let triggerDate = self.currentCalendar.dateComponents([.year, .month, .day, .hour, .minute], from: notification.startDate)
+                trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+            case .daily:
+                let triggerDaily = self.currentCalendar.dateComponents([.hour, .minute], from: notification.startDate)
+                trigger = UNCalendarNotificationTrigger(dateMatching: triggerDaily, repeats: true)
+            }
             
             let request = UNNotificationRequest(identifier: notification.id,
                                                 content: content,
                                                 trigger: trigger)
             
-            UNUserNotificationCenter.current().add(request)
+            self.notificationCenter.add(request)
         }
     }
     

@@ -7,20 +7,44 @@
 
 import SwiftUI
 
+
+enum TabName: Hashable {
+    case home
+    case settings
+}
+
+class SelectedTab: ObservableObject {
+    @Published var selection = TabName.home
+}
+
 @main
 struct QuotesApp: App {
     
+    @StateObject private var tabSelected = SelectedTab()
+    @StateObject private var quotesViewModel = QuotesViewModel(service: LocalQuotesService())
+    @StateObject private var notificationSettings = NotificationSettings()
+    
+    @AppStorage("firstLaunch") var firstLaunch = true
+    
+    private let tabAnimationDuration = 1.0
+    
     var body: some Scene {
         WindowGroup {
-            let quotesService = LocalQuotesService()
-            let quotesViewModel = QuotesViewModel(service: quotesService)
-            NavigationView {
-                InitialView(quotesViewModel: quotesViewModel)
+            TabView(selection: $tabSelected.selection) {
+                InitialView(quotesViewModel: quotesViewModel, selection: tabSelected)
+                    .tag(TabName.home)
+                SettingsView(selection: tabSelected, notificationSettings: notificationSettings)
+                    .tag(TabName.settings)
             }
-            .preferredColorScheme(.light)
+            .animation(.easeOut(duration: tabAnimationDuration))
+            .tabViewStyle(PageTabViewStyle())
             .onAppear {
-                let notification = LocalNotificationFactory().makeDailyQuote()
-                NotificationsScheduler().schedule(notification)
+                if firstLaunch {
+                    let notification = LocalNotificationFactory().makeDaily(startDate: Date())
+                    NotificationsScheduler().schedule(notification)
+                    firstLaunch = false
+                }
+                
                 quotesViewModel.fetchQuote()
             }
         }

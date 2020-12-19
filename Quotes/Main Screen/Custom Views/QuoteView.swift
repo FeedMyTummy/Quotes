@@ -9,29 +9,40 @@ import SwiftUI
 
 struct QuoteView: View {
     
-    @State private var animate = false
+    @State private var isFirstTimeAppearing = true
+    
     private let quote: Quote
     
+    // MARK: Constants
+    private let initialScaleFactor: CGFloat = 0.5
+    private let finalScaleFactor: CGFloat   = 1.0
+    private let horizontalPadding: CGFloat  = 20.0
+    private let animationDelay              = 0.05
+    private let animationDuration           = 0.3
+    
     var body: some View {
-        VStack {
-            Spacer()
-            BubbleView {
-                VStack {
-                    Text("\"\(quote.phrase)\"").font(.title).padding([.horizontal, .top])
-                    Text("- \(quote.author)").padding([.horizontal, .bottom])
-                }
-                .background(Color.white)
+        BubbleView {
+            VStack {
+                Text("\"\(quote.phrase)\"")
+                    .font(.title)
+                    .padding([.horizontal, .vertical])
+                    .foregroundColor(.black)
+                Text("- \(quote.author)")
+                    .padding([.horizontal, .bottom])
+                    .foregroundColor(.black)
             }
-            .padding([.horizontal], 20)
-            .scaleEffect(animate ? 1 : 0.5)
-            .onAppear {
-                withAnimation(.easeIn(duration: 0.3)) {
-                    animate.toggle()
-                }
-            }
-            Spacer()
-            Spacer()
+            .background(Color.white)
         }
+        .padding([.horizontal], horizontalPadding)
+        .scaleEffect(isFirstTimeAppearing ? initialScaleFactor : finalScaleFactor)
+        .onAppear {
+            guard isFirstTimeAppearing else { return }
+            isFirstTimeAppearing = false
+        }
+        .animation(
+            Animation.easeOut(duration: animationDuration)
+                     .delay(animationDelay)
+        )
     }
     
     init(_ quote: Quote) {

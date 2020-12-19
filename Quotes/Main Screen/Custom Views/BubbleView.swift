@@ -11,6 +11,12 @@ struct BubbleView<Content: View>: View {
     
     private let content: () -> Content
     
+    // MARK: - Constants
+    private let phraseAndAuthorVerticalSpacing: CGFloat = 25
+    private let bubbleCornerRadius: CGFloat = 25
+    private let shadowCornerRadius: CGFloat = 10
+    private let shadowOpacity: Double = 0.6
+    
     var body: some View {
         VStack(spacing: phraseAndAuthorVerticalSpacing) {
             content()
@@ -22,21 +28,12 @@ struct BubbleView<Content: View>: View {
     init(_ content: @escaping () -> Content) {
         self.content = content
     }
-    
-    // MARK: - Constants
-    private let phraseAndAuthorVerticalSpacing: CGFloat = 25
-    private let bubbleCornerRadius: CGFloat = 25
-    private let shadowCornerRadius: CGFloat = 10
-    private let shadowOpacity: Double = 0.6
 }
 
 struct BubbleView_Previews: PreviewProvider {
     static var previews: some View {
-        ZStack {
-            Rectangle().foregroundColor(.orange).edgesIgnoringSafeArea(.all)
-            BubbleView {
-                QuoteView(Quote(phrase: "21,000,000", author: "My Node"))
-            }
+        BubbleView {
+            QuoteView(Quote(phrase: "21,000,000", author: "My Node"))
         }
     }
 }
