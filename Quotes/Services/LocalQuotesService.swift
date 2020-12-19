@@ -15,9 +15,6 @@ final class LocalQuotesService: QuotesService {
     }
     
     private let quotes = [
-        Quote(phrase: "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks",
-              author: "Satoshi Nakamoto"),
-        
         Quote(phrase: "Not your keys, not your bitcoin",
               author: "Andreas Antonopoulos"),
         

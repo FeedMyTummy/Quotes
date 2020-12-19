@@ -1,5 +1,5 @@
 //
-//  TabViewNavigationView.swift
+//  TabNavigationView.swift
 //  Quotes
 //
 //  Created by FeedMyTummy on 12/6/20.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TabViewNavigationView: View {
+struct TabNavigationView: View {
     
     enum Side {
         case left
@@ -54,6 +54,6 @@ struct TabViewNavigationView: View {
 
 struct TabViewNavigationView_Previews: PreviewProvider {
     static var previews: some View {
-        TabViewNavigationView(icon: Image(systemName: "gear"), side: .left, {})
+        TabNavigationView(icon: Image(systemName: "gear"), side: .left, {})
     }
 }

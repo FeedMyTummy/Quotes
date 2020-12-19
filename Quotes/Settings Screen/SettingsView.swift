@@ -24,7 +24,7 @@ struct SettingsView: View {
     
     var body: some View {
         VStack {
-            TabViewNavigationView(icon: Image(systemName: "house.fill"), side: .left) {
+            TabNavigationView(icon: Image(systemName: "house.fill"), side: .left) {
                 tabSelected.selection = .home
             }
             

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 enum TabName: Hashable {
     case home
     case settings
