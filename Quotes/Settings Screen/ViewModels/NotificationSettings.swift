@@ -32,17 +32,10 @@ struct HourMinute: Equatable {
 
 class NotificationSettings: ObservableObject {
     
-    enum State: Equatable {
-        case idle
-        case loading
-        case dailyNotificationTime(HourMinute)
-        case disabled
-        case failed
-    }
-    
-    @Published private(set) var dailyNotificationTime: State = .idle
+    @Published private(set) var dailyNotificationTime: HourMinute?
     
     private var isFetching = false
+    private let notificationsScheduler = NotificationsScheduler()
     
     init() {
         loadDailyNotificationDate()
@@ -51,15 +44,15 @@ class NotificationSettings: ObservableObject {
     func rescheduleDailyNotificationWith(date: Date, completion: @escaping (Result<Void, NotificationsSchedulerError>) -> ()) {
         let dailyNotification = LocalNotificationFactory().makeDaily(startDate: date)
         
-        NotificationsScheduler().reschedule(dailyNotification) { [weak self] result in
+        notificationsScheduler.reschedule(dailyNotification) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self.dailyNotificationTime = .dailyNotificationTime(HourMinute(date: date))
+                    self.dailyNotificationTime = HourMinute(date: date)
                 case .failure:
-                    self.dailyNotificationTime = .failed
+                    self.dailyNotificationTime = nil
                 }
                 completion(result)
             }
@@ -67,22 +60,23 @@ class NotificationSettings: ObservableObject {
     }
     
     func removeDailyNotification() {
-        NotificationsScheduler().removeNotificationWith(ids: [LocalNotificationFactory.dailyNotificationID])
-        dailyNotificationTime = .disabled
+        notificationsScheduler.removeNotificationWith(ids: [LocalNotificationFactory.dailyNotificationID])
+        dailyNotificationTime = nil
     }
     
-     func loadDailyNotificationDate() {
+    func loadDailyNotificationDate() {
         guard !isFetching else { return }
         isFetching = true
         
-        dailyNotificationTime = .loading
-        NotificationsScheduler().dateForNotificationWith(id: LocalNotificationFactory.dailyNotificationID) { [weak self] date in
+        
+        notificationsScheduler.dateForNotificationWith(id: LocalNotificationFactory.dailyNotificationID) { [weak self] date in
             guard let self = self else { return }
             if let date = date {
-                self.dailyNotificationTime = .dailyNotificationTime(HourMinute(date: date))
+                self.dailyNotificationTime = HourMinute(date: date)
             } else {
-                self.dailyNotificationTime = .disabled
+                self.dailyNotificationTime = nil
             }
+            
             self.isFetching = false
         }
     }
