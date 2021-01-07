@@ -49,23 +49,30 @@ final class NotificationsScheduler {
     let notificationCenter = UNUserNotificationCenter.current()
     let currentCalendar = Calendar.current
     
-    func schedule(_ notification: QuotesNotification, completion: ((Result<Void, NotificationsSchedulerError>) -> ())? = nil) {
+    func schedule(_ notification: QuotesNotification, _ completion: @escaping ((Result<Void, NotificationsSchedulerError>) -> ())) {
         notificationCenter.getNotificationSettings { settings in
             switch settings.authorizationStatus {
             case .notDetermined:
-                self.requestNotificationAuthorization(notification) { granted in
-                    granted ? completion?(.success(())) : completion?(.failure(.authorizationDenied))
+                self.requestPermission { granted in
+                    if granted {
+                        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 0.3) {
+                            self.scheduleNotification(notification)
+                            completion(.success(()))
+                        }
+                    } else {
+                        completion(.failure(.authorizationDenied))
+                    }
                 }
             case .denied:
-                completion?(.failure(.authorizationDenied))
+                completion(.failure(.authorizationDenied))
             case .authorized:
-                self.scheduleNotifications(notification)
-                completion?(.success(()))
+                self.scheduleNotification(notification)
+                completion(.success(()))
             case .provisional, .ephemeral:
                 // TODO:
                 break
             @unknown default:
-                completion?(.failure(.uknown))
+                completion(.failure(.uknown))
                 break
             }
         }
@@ -77,8 +84,14 @@ final class NotificationsScheduler {
         schedule(notification) { result in
             switch result {
             case .success:
-                self.schedule(notification)
-                completion(.success(()))
+                self.schedule(notification) { result in
+                    switch result {
+                    case .success():
+                        completion(.success(()))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -90,18 +103,16 @@ final class NotificationsScheduler {
     }
     
     func dateForNotificationWith(id: String, completion: @escaping (Date?) -> Void) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.notificationCenter.getPendingNotificationRequests { requests in
-                
-                var date: Date? = nil
-                
-                if let notification = requests.first(where: { $0.identifier == id })?.trigger as? UNCalendarNotificationTrigger {
-                    date = self.currentCalendar.date(from: notification.dateComponents)
-                }
-                
-                DispatchQueue.main.async {
-                    completion(date)
-                }
+        notificationCenter.getPendingNotificationRequests { requests in
+            
+            var date: Date? = nil
+            
+            if let notification = requests.first(where: { $0.identifier == id })?.trigger as? UNCalendarNotificationTrigger {
+                date = self.currentCalendar.date(from: notification.dateComponents)
+            }
+            
+            DispatchQueue.main.async {
+                completion(date)
             }
         }
     }
@@ -113,19 +124,15 @@ final class NotificationsScheduler {
         }
     }
     
-    private func requestNotificationAuthorization(_ notification: QuotesNotification, completion: @escaping (Bool) -> ()) {
+    private func requestPermission(completion: @escaping (Bool) -> ()) {
         notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-            if granted && error == nil {
-                self.scheduleNotifications(notification)
-                completion(true)
-            }
-            completion(false)
+            completion(granted && error == nil)
         }
     }
     
-    private func scheduleNotifications(_ notification: QuotesNotification) {
-        doesNotificationExistWith(id: notification.id) { doesExist in
-            guard !doesExist else { return }
+    private func scheduleNotification(_ notification: QuotesNotification) {
+        doesNotificationExistWith(id: notification.id) { doesNotificationExist in
+            guard !doesNotificationExist else { return }
             
             let content = UNMutableNotificationContent()
             content.title = notification.title
@@ -139,7 +146,7 @@ final class NotificationsScheduler {
                 let triggerDate = self.currentCalendar.dateComponents([.year, .month, .day, .hour, .minute], from: notification.startDate)
                 trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
             case .daily:
-                let triggerDaily = self.currentCalendar.dateComponents([.hour, .minute], from: notification.startDate)
+                let triggerDaily = self.currentCalendar.dateComponents([.hour, .minute], from: notification.startDate.addingTimeInterval(10))
                 trigger = UNCalendarNotificationTrigger(dateMatching: triggerDaily, repeats: true)
             }
             

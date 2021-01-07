@@ -11,7 +11,7 @@ struct SettingsView: View {
     
     @Environment(\.presentationMode) private var presentationMode
     @ObservedObject private var tabSelected: SelectedTab
-    @ObservedObject private var notificationSettings: NotificationSettings
+    @StateObject private var notificationSettings = NotificationSettings()
     @State private var saveButtonRotation            = 0.0
     @State private var selectedDate                  = Date()
     @State private var notifyDaily                   = false
@@ -35,7 +35,13 @@ struct SettingsView: View {
             
         }
         .onChange(of: selectedDate) { _ in
-            if case .dailyNotificationTime(let time) = notificationSettings.dailyNotificationTime {
+            if let time = notificationSettings.dailyNotificationTime {
+                hasSelectionChanged = time != HourMinute(date: selectedDate)
+                notifyDaily = true
+            }
+        }
+        .onChange(of: notificationSettings.dailyNotificationTime) { _ in
+            if let time = notificationSettings.dailyNotificationTime {
                 hasSelectionChanged = time != HourMinute(date: selectedDate)
                 notifyDaily = true
             }
@@ -43,15 +49,18 @@ struct SettingsView: View {
         .foregroundColor(.black)
         .background(Color.white)
         .onAppear {
-            if case .dailyNotificationTime(let time) = notificationSettings.dailyNotificationTime {
-                selectedDate = time.toDate()
-            }
+//            if let time = notificationSettings.dailyNotificationTime {
+//                selectedDate = time.toDate()
+//                notifyDaily = true
+//            }
+//            else {
+//                notificationSettings.loadDailyNotificationDate()
+//            }
         }
     }
     
-    init(selection: SelectedTab, notificationSettings: NotificationSettings) {
+    init(selection: SelectedTab) {
         self.tabSelected = selection
-        self.notificationSettings = notificationSettings
     }
     
     @ViewBuilder private func makeDatePickingView() -> some View {
@@ -135,6 +144,6 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(selection: .init(), notificationSettings: NotificationSettings())
+        SettingsView(selection: .init())
     }
 }

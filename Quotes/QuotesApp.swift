@@ -21,7 +21,6 @@ struct QuotesApp: App {
     
     @StateObject private var tabSelected = SelectedTab()
     @StateObject private var quotesViewModel = QuotesViewModel(service: LocalQuotesService())
-    @StateObject private var notificationSettings = NotificationSettings()
     
     @AppStorage("firstLaunch") var firstLaunch = true
     
@@ -32,7 +31,7 @@ struct QuotesApp: App {
             TabView(selection: $tabSelected.selection) {
                 InitialView(quotesViewModel: quotesViewModel, selection: tabSelected)
                     .tag(TabName.home)
-                SettingsView(selection: tabSelected, notificationSettings: notificationSettings)
+                SettingsView(selection: tabSelected)
                     .tag(TabName.settings)
             }
             .animation(.easeOut(duration: tabAnimationDuration))
@@ -40,8 +39,9 @@ struct QuotesApp: App {
             .onAppear {
                 if firstLaunch {
                     let notification = LocalNotificationFactory().makeDaily(startDate: Date())
-                    NotificationsScheduler().schedule(notification)
-                    firstLaunch = false
+                    NotificationsScheduler().schedule(notification) { _ in
+                        firstLaunch = false
+                    }
                 }
                 
                 quotesViewModel.fetchQuote()
