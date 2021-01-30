@@ -43,20 +43,12 @@ struct SettingsView: View {
         .onChange(of: notificationSettings.dailyNotificationTime) { _ in
             if let time = notificationSettings.dailyNotificationTime {
                 hasSelectionChanged = time != HourMinute(date: selectedDate)
+                selectedDate = time.toDate()
                 notifyDaily = true
             }
         }
         .foregroundColor(.black)
         .background(Color.white)
-        .onAppear {
-//            if let time = notificationSettings.dailyNotificationTime {
-//                selectedDate = time.toDate()
-//                notifyDaily = true
-//            }
-//            else {
-//                notificationSettings.loadDailyNotificationDate()
-//            }
-        }
     }
     
     init(selection: SelectedTab) {
@@ -112,7 +104,7 @@ struct SettingsView: View {
                 .font(.system(size: 20))
         }
         .padding(.bottom, 60)
-        .opacity(notifyDaily && hasSelectionChanged ? 1 : 0)
+        .opacity(!notifyDaily || hasSelectionChanged ? 1 : 0)
         .rotation3DEffect(
             .degrees(saveButtonRotation),
             axis: (x: 0.0, y: 1.0, z: 0.0)
