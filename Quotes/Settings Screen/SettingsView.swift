@@ -11,7 +11,7 @@ struct SettingsView: View {
     
     @Environment(\.presentationMode) private var presentationMode
     @ObservedObject private var tabSelected: SelectedTab
-    @StateObject private var notificationSettings = NotificationSettings()
+    @StateObject private var notificationSettings    = NotificationSettings()
     @State private var saveButtonRotation            = 0.0
     @State private var selectedDate                  = Date()
     @State private var notifyDaily                   = false
@@ -19,8 +19,8 @@ struct SettingsView: View {
     
     // MARK: Constants
     private let totalSpinDegrees = 360.0
-    private let tabChangeDelay = 0.5
-    private let spinDuration = 0.4
+    private let tabChangeDelay   = 0.5
+    private let spinDuration     = 0.4
     
     var body: some View {
         VStack {
@@ -104,7 +104,7 @@ struct SettingsView: View {
                 .font(.system(size: 20))
         }
         .padding(.bottom, 60)
-        .opacity(!notifyDaily || hasSelectionChanged ? 1 : 0)
+        .opacity(hasSelectionChanged ? 1 : 0)
         .rotation3DEffect(
             .degrees(saveButtonRotation),
             axis: (x: 0.0, y: 1.0, z: 0.0)
