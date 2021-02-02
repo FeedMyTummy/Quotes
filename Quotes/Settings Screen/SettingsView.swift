@@ -42,7 +42,6 @@ struct SettingsView: View {
         }
         .onChange(of: notificationSettings.dailyNotificationTime) { _ in
             if let time = notificationSettings.dailyNotificationTime {
-                hasSelectionChanged = time != HourMinute(date: selectedDate)
                 selectedDate = time.toDate()
                 notifyDaily = true
             }
